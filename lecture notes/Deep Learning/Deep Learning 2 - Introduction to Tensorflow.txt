@@ -1,0 +1,48 @@
+- Tensorflow Edges: Tensors
+- Tensorflow Nodes: Create or manipulate these Tensors with different operations (Ops)
+
+- Operations that do not depend on each other can schedule in parallel
+    - much better performance according to the hardware --> parallelisation
+
+- Variable ops, to read and update writable values that persits across executions
+- Conditional ops, to make part of the computation conditoonal on other parallelisation
+- Loop ops, to allow efficiently specify computational graph with cycles
+- Control ops, to enforce an order in the execution of pairs of ops
+- Queue ops, to describe asynchronous computation
+
+- tf.Graph describes computations through Ops and Tensors
+    - Difference between declaring and execution
+        - In the declaring phase no object is created, only at the execution phase
+
+- tf.Session: 
+    - carries out the actual computations
+    - session.run(tensor) executes the graph and returns
+    - when session.run() is called, TensorFlow identifies and executes the smallest set of nodes that needs to be evaluated in order to compute the requested Tensors
+    - TF can schedule the execution of ops which do not depend on each other in parallel across available cores, devices and machines
+
+- Variables enable learning, by preserving state across execution of the graph
+    - v = tf.get_variable(...)
+    - Variables can be read and used as any other Tensor
+    - Can be assigned new values (which is also an op)
+    - any var we define must be ecplicitly initialized before its first use in a session
+        - init at once: init = tf.gloabl_variables_initializer() and then session.run(init)
+        - or through: tf.train.MonitoredSession() automatically --> but finalizes the graph --> additional ops after session.run() raise errors
+
+- Use placeholders and feed dictionaries to inject data in the graph at execution time
+
+- Automatic Differentiation
+    - graphs allows to easily compute gradients
+    - starts from the output node and iterates backwards multiplying the gradients of individual ops along paths, and summing them when paths join
+    - chain rule provides us with gradients for any Tensor with respect to any other if we know the gradients of the output of each op with respect to is direct inputs
+        - this ia called reverse mode auto-Differentiation (provides exact gradients)
+
+- Gradients in TensorFlow: grads = tf.gradients(my_tensor, var_list)
+    - list of Tensors of length len(var_list)
+    - If my_tensor does not depend on some of the variables, the corresponding entry in grads is None
+- But no need to compute the gradients - Better: High level components: Pre-defined Optimizers (RMSProp, Adam,...)
+
+- Contional and iterative computation available and also control dependencies between ops
+
+- High level libaries:
+    - Sonnet (from DeepMind)
+    - Keras

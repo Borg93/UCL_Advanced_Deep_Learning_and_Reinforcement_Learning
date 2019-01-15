@@ -1,0 +1,18 @@
+# Advanced Deep Learning and Reinforcement Learning
+This repo contains the playlist link to the videos, the slides and sample solutions of the assignments for the UCL course *Advanced Deep Learning and Reinforcement Learning* taught by Deepmind.
+The sample solutions are created by myself and are not from Deepmind, so that it is possible that there are bugs. If you found some feel free to contribute.
+Furthermore the repo contains some notes that I have created during 
+
+## Resources
+
+**Lecture Videos**: 
+You can find the playlist [here on YouTube](https://www.youtube.com/watch?v=iOh7QUZGyiU&list=PLqYmG7hTraZDNJre23vqCGIVpfZ_K2RZs)
+
+**Lecture Slides**:
+The lecture slides are copied from [here](https://github.com/RylanSchaeffer/ucl-adv-dl-rl).
+
+**Lecture Assignments**:
+Empty jupyter notebook files and sample solution files.
+The empty notebooks are copied from [ADL_RL](https://github.com/YidingYu/ADL_RL).
+
+

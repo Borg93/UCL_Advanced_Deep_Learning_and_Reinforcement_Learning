@@ -1,0 +1,53 @@
+- NN: Linear Transforms + nonlinear functions (= Layer)
+    - Learning: Optimizing a loss function over data
+
+- Linear (dense/fully-connected) layer:
+    - weighted sum of inputs: y = sum_i (w_i * x_i) + b (also in verctorized form)
+- Sigmoid layer:
+    - sigma(x) = 1/(1+e^(-x))
+    - typically applied after a linear layer
+    - was popular, but now its clear that it not has the nicest gradient properties
+- Softmax layer:
+    - y_i = e^(x_i)/(sum_j=1^K e^(x_j)) (non-negative, probability distrubution over the K indices of y)
+    - largest element becomes 1, the rest 0
+    - multi-class classification
+    - Use a “1-hot” vector, to encode the “true” class label.
+- ReLU (Rectified Linear Unit)
+    - simpler/cheaper than Sigmoid
+    - y_i = max(0, x_i)
+    gradient is constant
+
+- Cross entropy loss: l(y, p) = y*log(p) + (1-y)*log(1-p)
+
+- Hidden layers
+    - Hidden layer nets as "universal function approximators"
+        - In 1D, can use pairs of offset sigmoid hidden units to form localised “bumps”.
+        - The more bumps we have, the steeper/narrower they can be, and the better our approximation
+    - Outputs of one layer --> inputs to the next
+    - Simple XOR Example
+
+- Why adding depth helps:
+    - the number of linear regions (to which we can classify inputs) grows exponentially with depth and polynomially with the number of units per hidden layer
+
+- Object oriented approach of NN viewed as compute graphs:
+- Minimal set of API functions each object of a computation graph needs to provide:
+    - forward_pass()
+    - backward_pass()
+    - compute_gradients()
+
+Learning:
+One Training loop:
+- Training digits and labels => loss function => gradient (partial derivatives) => steepest descent => update weights and biases => repeat with next mini-batch of training images and labels
+- using optimization methods to find a set of models parameters that minimize the loss function
+    - gradient descent
+        - full/mini batch gradient descent --> entire/partial batch of data
+        - online gradient descent --> one datum at a time
+- Chainrule, backprop and automatic diff
+    - Forwards mode AD:
+        - Traverse graph from each input to output
+        - Intermediate results provide derivative of each node wrt to the original input
+    - Reverse mode AD (i.e. backprop)
+        - Traverse graph from output to input
+        - Intermediate results provide derivative of the output with respect to each node
+    - Backward pass:
+        - compute derivative of the loss wrt inputs of a module, given the derivatives of the loss wrt outputs of that module.

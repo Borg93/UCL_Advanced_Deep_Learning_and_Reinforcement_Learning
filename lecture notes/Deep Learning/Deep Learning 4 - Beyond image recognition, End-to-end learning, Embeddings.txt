@@ -1,0 +1,55 @@
+Beyond image recognition
+Image Recognition Tasks
+    - Image classification
+    - Object localisation/detection
+    - Semantic segmentation
+    - Instance segmentation
+
+- State of the art: Proposal-based object detection: faster R-CNN (region-CNN)
+    - Pretrained Conv.-layers with following proposal stage (produces object locations) and final stage (classifies proposals into classes)
+    - region proposal network: different anchor boxes --> predict proposal box location wrt the anchor, predict if the proposal contains some object
+
+- Semantic Segmentation:
+    - classify each pixel into one of the object classes
+    - output: full resulution map S with #classes channels: S_i,j,c=likelihood of pixel (i,k) having class c
+    - usage of transposed conv after pooling
+    - Possibility: skip connections from shallow (hi-res) layers to deep (low-res) layers
+
+Video classification
+    - Fusing informations over multiple frames:
+        - Methods: Single Frame, Late Fusion, Early Fusion, Slow Fusion
+        - All methods using a fixed window size
+        - Application example: Two-Stream ConvNet for Video
+            - Spatial stream convnet and temporal stream convnet
+            - appeareance and motion are processed separately
+
+Spatial Transoformation:
+- Pooling layers to accommodate spatial translations
+- Better: Learning rotations --> Spatial Transformer Net
+    - that means learn to transform the input so that it can be understood
+    - Differentiable components of the Spatial Transformer Net:
+        1. Localisation net: trainable function maps input features to transformation
+        2. Grid generator: creates a sampling grid
+        3. Sampler: produces the transformed feature map
+
+Learning relationships from data
+- goal is similarity / dissimilarity, visualisation, relations, clustering or the underlying structure
+- Training labels?
+- Learning Embeddings:
+    - use distances in feature space (L2)
+    - contrastive squared loss (per sample)
+        - y = 1 if samples are similiar and y = -1 if samples are different
+    - cosine similaritx loss (per sample)
+    - triplet loss (per sample)
+    - Usage example: face recognition
+
+RL + DL: Learning to navigate in 3D mazes
+- Accelerate reinforcement learning through auxiliary losses
+- Construction layout:
+    1. Convolutional encoder and RGB inputs
+    2. Stacked LSTM
+    3. Additional inputs (reward, action, and velocity)
+    4. RL: Asynchronous advantage actor critic (A3C)
+    5. Auxilary task 1: Depth predictors (D1 + D2)
+    6. Aux task 2: Loop closure predictor (--> LSTM) (L)
+    7. For analysis: Position decoder

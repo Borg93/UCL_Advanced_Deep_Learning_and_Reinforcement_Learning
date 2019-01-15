@@ -1,0 +1,91 @@
+Reinforcement learning:
+
+What is reinforcement learning?
+- There are (at least) two distinct reasons to learn:
+        1. Find previously unknown solutions
+        E.g., a program that can play Go better than any human, ever
+        2. Find solutions online, for unforeseen circumstances
+        E.g., a robot that can navigate terrains that differ greatly from any expected terrain
+􏰀- Reinforcement learning seeks to provide algorithms for both cases
+- Science of learning to make decisions from interaction. This requires us to think about
+􏰀  ...time
+􏰀  ..(long-term) consequences of actions
+􏰀  ...actively gathering experience
+􏰀  ...predicting the future
+􏰀  ...dealing with uncertainty
+- No supervision, only a reward signal
+
+Core concepts
+- Environment
+- Reward signal
+- Agent (with his state, poicy, value function and (optional) model)
+
+- Rewards:
+    - is a scalar feedback signal
+    - Agents jn: maximize cumulative reward = return: G_t = R_t+1 + R_t+2 + ...
+    - Rewad Hypothesis: Any goal can be formalized as the outcome of maximizing a cumulative reward
+- Values:
+    - State Value: expected cumulative reward, for a state s: v(s) = E[G_t|S_t = s]
+    - Action Value: expected cumulative reward, for an action from state s: q(s, a) = E[G_t|S_t = s, A_t = a]
+- Actions:
+    - Goal: select actions to maximise value
+    - A Mapping from states to actions is called a policy
+    - may have long term consequences
+
+Agent components
+- State:
+    - Not the same as the environment state
+    - Full observability: obeservation = environment state --> Markov decision process
+        - MDP: The future is independent of the past given the present
+            - Once the state is known, the history may be thrown away 􏰀 
+            - The environment state is typically Markov
+    - Partially Observable Environments: The agent gets partial information
+        - not markov; the env state can still be Markov but the agent does not know
+        - To deal with partial observability, agent can construct suitable state representations
+            - with last observation or the complete history (recurrent neural network)
+    - Agent state: is a function of the history
+        - S_t+1 = f(S_t, A_t, R_t+1, O_t+1)
+- Policy:
+    - Defines the actions behavior: Mapping from state to action
+        - Deterministic: A = pi(s)
+        - Stochadtic: pi(A|S) = p(A|S)
+- Value function:
+    - expected retzurn (see above)
+        - Discount factor: gamme element of [0, 1]
+            - Trades off importance of immediate vs long-term Rewards
+    - depends on a policy
+    - can be used to select between actions
+    - Bellman equation: 
+        - v_pi(s) = E[R_t+1 + gamma*v_pi(S_t+1) | S_t = s, A_t ~ pi(s)]
+        - Optimal: v_*(s) = max_a E[R_t+1 + gamma*v_*(S_t+1) | S_t = s, A_t = a]
+            - depends not on a policy
+    - can be approximated
+        - Neural networks: Take care: we often violate assumptions from supervised learning (iid, stationarity)
+- Model:
+    - predicts what the environment will do next
+        - state transition function and reward function
+
+Categorizing agents
+    Value Based
+        No Policy (Implicit)
+        Value Function
+    Policy Based
+        Policy
+        No Value Function
+    Actor Critic
+        Policy
+        Value Function
+
+Challenges in reinforcement learning
+- Fundamental Problems: Learning and Planning
+    - Learning: Env is inistially unknown and agent interacts with interaction
+    - Planning: Model is given and agents plans in this model
+- Prediction and Contol
+    - Predition: evaluate the future
+    - Control: optimize the future
+    - pi_*(s) = argmax_pi v_pi(s)
+
+Exploration and Exploitation:
+    - Exploration finds more information
+    - Exploitation exploits known information to maximise reward
+    - it is important to explore as well as exploit --> fundamental problem

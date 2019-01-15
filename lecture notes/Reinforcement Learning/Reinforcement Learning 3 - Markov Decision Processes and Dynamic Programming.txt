@@ -1,0 +1,61 @@
+Markov Decision Processes and Dynamic Programming
+- For now, assume the environment is fully observable: the current observation contains all relevant information
+- Markov proterty: “The future is independent of the past given the present”
+    - p􏰂(R_t+1=r,S_t+1=s'|S_t =s􏰃) = p􏰂(R_t+1=r,S_t+1=s'|S_1,...,S_t−1,S_t=s􏰃)
+- Markov decision process is a tuple (S,A,p,γ), where
+    - S is the set of all possible states
+    - A is the set of all possible actions (e.g., motor controls)
+    - p(r,s'|s,a) is the joint probability of a reward r and next state s', given a state sand action a
+    - γ ∈ [0, 1] is a discount factor that trades off later rewards to earlier ones
+- Return: total discounted reward from time-step t:
+    - G_t = R_t+1 + γ R_t+2 + ... = sum_k=0^infy γ^k R_t+k+1
+- Why discount: 
+    - Avoids infinite returns in cyclic Markov processes
+    - Immediate rewards may actually be more valuable
+    - Reward and discount together determine the goal
+- The value function v(s) gives the long-term value of state s v_pi(s) = E[G_t|S_t=s, pi]
+- The state-action value function q_pi(s,a) = E[G_t|S_t=s, A_t=a, pi]
+- Bellman Equation for given pi can be expressed using matrices: v = r + γ P^pi v
+    - This linear systems of equations can be solved directly: v = (I-γP^pi)^(-1)r
+    - computation is O(|S|^3) and sus only possible for small problems
+- Optimal Value Functions:
+    - optimal state value function: v^*(s) = max_pi v^pi(s)
+    - optimale action-value function: q^*(s,a) = max_pi q^pi(s,a)
+- Policy Evaluation (or preiction): Estimating the function of a given policy pi
+- Control (for policy optimisation): Estimating the optimal functions
+
+Optimal policy:
+- pi >= pi' if v^pi(s) >= v_pi'(s) for all s
+- For any Markov decision process
+􏰀- There exists an optimal policy π∗ that is better than or equal to all other policies, π∗ ≥π,∀π
+- All optimal polcies achiv eve the optimal value function and the optimal action-value function
+
+Dynamic programming:
+Synchronous dynamic programming:
+- Consist of policy evaluation and policy improvement
+- Policy evaluation: Initialise and iterate ∀s: v_k+1(s)=E[R_t+1 + γ v_k(S_t+1)|s,π]
+- Policy improvement: iterate, using ∀s : π_new(s) = argmax q_π(s,a) and the evaluate π_new and repeat
+- Policy iteration: Estimate v_pi and the generate pi' >= pi and repeat
+- Value iteration: We could take the Bellman optimality equation and turn that into an update
+    - equivalent to policy iteration with k=1 step of policy evaluation between each two policy improvement steps
+
+Asynchronous dynmic programming:
+- In-place dynamic programming:
+    - Value-iteration updates are performend in-place and the algorithm stores only one copy of the value function
+- Prioritised Sweeping:
+    - Use magnitude (Betrag) of Bellman error to guide state selection
+        - with a priority queue and knowledge of the predecessor states
+- Real-Time Dynamic Programming
+    - only update states that are relevant to agent
+
+DP uses full-width backups
+    - Every successor state and action is considered
+    - Using true model of transitions and reward function
+
+Bootstrapping:
+    - Dynamic programming improves the estimate of the value at a state using the estimate of the value function at subsequent states
+    - There is a theoretical danger of divergence when combining
+        1. Bootstrapping
+        2. General function approximation
+        3. Updating values for a state distribution that doesn’t match the transition dynamics
+of the MDP

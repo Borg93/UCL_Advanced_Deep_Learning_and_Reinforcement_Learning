@@ -1,0 +1,90 @@
+Model-Free Prediction and Control
+- unknown MDP
+- use experience samples to learn without a model
+- Simple example: Multi-armed bandit
+
+Contextual bandits:
+- bandits with different states
+- estimate q(s,a)
+- Target: G_t
+- Loss: l_t(θ)= (1/2)*(q_θ(S_t,A_t)−R_(t+1))^2
+
+Monte-Carlo Policy Evaluation:
+- learn v_pi from episodes of experience under policy v_pi
+- we can just use sample average return instead of expected return
+
+Temporal Difference Learning
+- Bootstrapping:
+- v_t+1(S_t)=v_t(S_t)+α_t (R_t+1 +γ*v_t(S_t+1)−v_t(S_t))
+- Target: R_t+1 +γ*v_t(S_t+1)
+- TD error: R_t+1 +γ*v_t(S_t+1)−v_t(S_t)
+- TD is model-free (no knowledge of MDP) and learn directly from experience 􏰀 
+- TD can learn from incomplete episodes, by bootstrapping
+􏰀- TD can learn during each episode
+
+MC and TD
+- MC: v(St) ← v(St)+α(Gt −v(St))
+    - Update value v(St) towards sampled return G_t
+- TD: v_t(S_t) ← v_t(S_t)+α_t (R_t+1 +γ*v_t(S_t+1)−v_t(S_t))
+    - Update value v(S:t) towards estimated return R_t+1 +γ*v_t(S_t+1)
+- TD can learn before knowing the final outcome
+    - TD can learn online after every step
+    - MC must wait until end of episode before return is known
+- 􏰀TD can learn without the final outcome
+    - TD can learn from incomplete sequences
+    - MC can only learn from complete sequences
+    - TD works in continuing (non-terminating) environments
+    - MC only works for episodic (terminating) environments
+- TD target is biased but has much lower variance (depends on one random action), whereas the Reutn is unbiased (many random actions)
+- TD and MC converge with FINITE experience to different answers
+- Bootstrapping: update involves an estimate
+    - MC does not bootstrap
+    - DP bootstraps
+    - TD bootstraps
+- Sampling: update samples an expectation
+    - MC samples
+    - DP does not sample
+    - TD samples
+
+Model-free Control
+- Optimise the value function of an unknown MDP
+
+Model-free Policy Iteration Using Action-Value Function:
+- Greedy policy improvement over q(s,a) is model-free: π'(s) = argmax_a q(s, a)
+- GLIE: Greedy in the Limit with Infinite Exploration
+    - All s-a-Pairs are explored infinitely many times so that the policy converges
+    - for example use diverging epsilon = 1/k with k as the number of the episode
+
+TD Control
+Advantages of TD over MC
+    - Lower variance
+    - Online
+    - Can learn from incomplete sequences
+􏰀- Natural idea: use TD instead of MC for control
+    - Apply TD to q(s, a)
+    - Use, e.g., ε-greedy policy improvement
+    - Update every time-step
+
+SARSA
+    - q(s, a) ← q(s, a) + α *( r + γq(s', a') − q(s, a)􏰃 )
+    - q_t+1(s,a)=q_t(S_t,A_t)+α_t*(R_t+1 +γq_t(S_t+1,A_t+1)−q_t(S_t,A_t))
+    - On policy: Learn about policy pi from experience sampled from pi
+
+Q-Learning
+    - 
+    - q_t+1(s,a)=q_t(S_t,A_t)+α_t*(R_t+1 +γ max_a' q_t(S_t+1,a')−q_t(S_t,A_t)
+    - estimates the value of the greedy policy
+    - Off-policy: Learn about policy pi from experience sampled from b := behaviour Policy
+        - Learn from observing humans or other agents
+        - Re-use experience from old policies
+        - Learn about optimal policy while following exploratory policy
+        - Learn about multiple policies while following one policy
+    - is more likely to select overestimated values and less likely to select underestimated values
+        - uses same values to select and to evaluate
+        - Solution: decouple selection from evaluation using Double Q-Learning with q and q'
+            - R_t+1 +γq_t'(S_t+1,argmax_a q_t(S_t+1, a)) & R_t+1 +γq_t(S_t+1,argmax_a q_t'(S_t+1, a))
+            - randomly select between these two formulas
+            - with these two formulas q and q' know about each other
+
+Importance sampling pi/b*R_t+1 as an unbiased sample when following b
+    - but this increases the variance

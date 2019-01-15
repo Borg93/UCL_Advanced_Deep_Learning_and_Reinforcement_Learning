@@ -1,0 +1,17 @@
+- Goal of RL: Maximizing long term reward
+- RL encompasses supervised and unsupervised learning as special cases
+
+- What is intelligence? : Intelligences measures an agent's ability to achieve goals a wide range of environments
+    - Universal intelligence: Leeg & Hutter
+
+- 'End-to-end' learning agents: from pixels to actions
+- Deep learning enables End-to-End-learning (applieable to images, text, audio, video)
+    - Automatically learn features
+- Unsupervised Learning: ...
+
+- Sequence Modeling: Allmost all data are sequence (Text, Video, Audio, ...)
+
+- Human-level control trough deep reinforcement learning
+    - ATARI-Games provides good platform for sequential decision making
+    - Unified Action interface
+    - Based on Deep-Q-Networks
